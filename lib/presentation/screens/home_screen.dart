@@ -16,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext homesScreenContext) {
     return BlocListener<InternetCubit, InternetState>(
       listener: (context, state) {
         if (state is InternetConnected &&
@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               BlocBuilder<InternetCubit, InternetState>(
-                builder: (context, state) {
+                builder: (internetCubitBuildContext, state) {
                   if (state is InternetConnected &&
                       state.connectionType == ConnectionType.Wifi) {
                     return Text(
@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 textAlign: TextAlign.center,
               ),
               BlocConsumer<CounterCubit, CounterState>(
-                listener: (context, state) {
+                listener: (counterCubitListenerContext, state) {
                   if (state.wasIncremented == true) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text("Incremented"),
@@ -109,43 +109,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                 },
               ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //   children: [
-              //     FloatingActionButton(
-              //       heroTag: Text('${widget.title}'),
-              //       onPressed: () {
-              //         BlocProvider.of<CounterCubit>(context).decrement();
-              //       },
-              //       tooltip: "Decrement",
-              //       child: Icon(Icons.remove),
-              //     ),
-              //     FloatingActionButton(
-              //       heroTag: Text('${widget.title} #2'),
-              //       onPressed: () {
-              //         BlocProvider.of<CounterCubit>(context).increment();
-              //       },
-              //       tooltip: "Increment",
-              //       child: Icon(Icons.add),
-              //     ),
-              //   ],
-              // ),
               SizedBox(
                 height: 24,
               ),
-              MaterialButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/second');
-                },
-                color: Colors.redAccent,
-                child: Text("Go to Second Screen"),
+              Builder(
+                builder: (materialButtonContext) => MaterialButton(
+                  onPressed: () {
+                    Navigator.of(materialButtonContext).pushNamed('/second');
+                  },
+                  color: Colors.redAccent,
+                  child: Text("Go to Second Screen"),
+                ),
               ),
               SizedBox(
                 height: 24,
               ),
               MaterialButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/third');
+                  Navigator.of(homesScreenContext).pushNamed('/third');
                 },
                 color: Colors.greenAccent,
                 child: Text("Go to third Screen"),
